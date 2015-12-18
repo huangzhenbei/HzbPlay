@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/px540"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/custom_dialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/px30"
+        android:gravity="center"
+        android:textColor="@color/fanxq_text_33_33_33"
+        android:textSize="@dimen/px32" />
+
+    <TextView
+        android:id="@+id/custom_dialog_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="14dp"
+        android:gravity="center"
+        android:textColor="@color/fanxq_text_98_98_100"
+        android:textSize="@dimen/px28_sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="21dp"
+        android:background="#AFAFBC" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px84" >
+
+        <TextView
+            android:id="@+id/customer_dialog_cancel"
+            style="@style/TextNormalTheme"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/custom_dialog_btn_selector"
+            android:gravity="center"
+            android:text="@string/cancel_text"
+            android:textColor="@color/fanxq_text_98_98_100"
+            android:textSize="@dimen/px28_sp" />
+
+        <View
+            android:id="@+id/customer_dialog_line"
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="#AFAFBC" />
+
+        <TextView
+            android:id="@+id/customer_dialog_ok"
+            style="@style/TextNormalTheme"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/custom_dialog_btn_selector"
+            android:gravity="center"
+            android:text="@string/dialog_confirm_ok"
+            android:textColor="@color/fanxq_text_98_98_100"
+            android:textSize="@dimen/px28_sp" />
+    </LinearLayout>
+
+</LinearLayout>

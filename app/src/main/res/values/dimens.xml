@@ -1,0 +1,101 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+
+    <dimen name="px28_sp">14sp</dimen>
+    <dimen name="px24_sp">12sp</dimen>
+
+    <dimen name="video_play_controll_bar_height">35dp</dimen>
+
+    <dimen name="common_text_size">14dp</dimen>
+
+    <dimen name="coursemain_videoplay_height">202dp</dimen>
+
+    <dimen name="hot_point_float_panel_offset">1.5dp</dimen>
+
+
+    <dimen name="px8">4dp</dimen>
+    <dimen name="px10">5dp</dimen>
+    <dimen name="px12">6dp</dimen>
+    <dimen name="px14">7dp</dimen>
+    <dimen name="px16">8dp</dimen>
+    <dimen name="px18">9dp</dimen>
+    <dimen name="px20">10dp</dimen>
+    <dimen name="px22">11dp</dimen>
+    <dimen name="px24">12dp</dimen>
+    <dimen name="px26">13dp</dimen>
+    <dimen name="px28">14dp</dimen>
+    <dimen name="px30">15dp</dimen>
+    <dimen name="px32">16dp</dimen>
+    <dimen name="px34">17dp</dimen>
+    <dimen name="px36">18dp</dimen>
+    <dimen name="px37">19dp</dimen>
+    <dimen name="px38">19dp</dimen>
+    <dimen name="px40">20dp</dimen>
+    <dimen name="px42">21dp</dimen>
+    <dimen name="px44">22dp</dimen>
+    <dimen name="px46">23dp</dimen>
+    <dimen name="px48">24dp</dimen>
+    <dimen name="px52">26dp</dimen>
+    <dimen name="px54">27dp</dimen>
+    <dimen name="px56">28dp</dimen>
+    <dimen name="px58">29dp</dimen>
+    <dimen name="px60">30dp</dimen>
+    <dimen name="px64">32dp</dimen>
+    <dimen name="px66">33dp</dimen>
+    <dimen name="px82">41dp</dimen>
+    <dimen name="px84">42dp</dimen>
+    <dimen name="px88">44dp</dimen>
+    <dimen name="px90">45dp</dimen>
+    <dimen name="px94">47dp</dimen>
+    <dimen name="px96">48dp</dimen>
+    <dimen name="px98">49dp</dimen>
+    <dimen name="px100">50dp</dimen>
+    <dimen name="px102">51dp</dimen>
+    <dimen name="px104">52dp</dimen>
+    <dimen name="px106">53dp</dimen>
+    <dimen name="px110">55dp</dimen>
+    <dimen name="px112">56dp</dimen>
+    <dimen name="px118">59dp</dimen>
+    <dimen name="px120">60dp</dimen>
+    <dimen name="px124">62dp</dimen>
+    <dimen name="px132">66dp</dimen>
+    <dimen name="px134">67dp</dimen>
+    <dimen name="px140">70dp</dimen>
+    <dimen name="px144">72dp</dimen>
+    <dimen name="px146">73dp</dimen>
+    <dimen name="px170">85dp</dimen>
+    <dimen name="px180">90dp</dimen>
+    <dimen name="px182">91dp</dimen>
+    <dimen name="px190">85dp</dimen>
+    <dimen name="px192">96dp</dimen>
+    <dimen name="px200">100dp</dimen>
+    <dimen name="px204">102dp</dimen>
+    <dimen name="px238">119dp</dimen>
+    <dimen name="px248">124dp</dimen>
+    <dimen name="px270">135dp</dimen>
+    <dimen name="px276">138dp</dimen>
+    <dimen name="px286">143dp</dimen>
+    <dimen name="px234">117dp</dimen>
+    <dimen name="px236">118dp</dimen>
+    <dimen name="px80">40dp</dimen>
+    <dimen name="px240">120dp</dimen>
+    <dimen name="px300">150dp</dimen>
+    <dimen name="px320">160dp</dimen>
+    <dimen name="px360">180dp</dimen>
+    <dimen name="px390">195dp</dimen>
+    <dimen name="px540">270dp</dimen>
+    <dimen name="px580">290dp</dimen>
+    <dimen name="px600">300dp</dimen>
+    <dimen name="px640">320dp</dimen>
+    <dimen name="px876">438dp</dimen>
+    <dimen name="px20_sp">10sp</dimen>
+    <dimen name="px22_sp">11sp</dimen>
+    <dimen name="px26_sp">13sp</dimen>
+    <dimen name="px30_sp">15sp</dimen>
+    <dimen name="px32_sp">16sp</dimen>
+    <dimen name="px34_sp">17sp</dimen>
+
+</resources>

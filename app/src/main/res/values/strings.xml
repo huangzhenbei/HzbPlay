@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">运营-播放器</string>
+
+    <string name="fanxq_advertisement">了解详情 > </string>
+    <string name="fanxq_cancel_advertisement">跳过广告</string>
+    <string name="video_no_net_text">网络连接失败，检查网络后点击重新播放</string>
+
+    <string name="dialog_confirm_ok">确定</string>
+    <string name="cancel_text">取消</string>
+
+    <string name="text_capture">拍照</string>
+    <string name="text_picture">图库</string>
+</resources>

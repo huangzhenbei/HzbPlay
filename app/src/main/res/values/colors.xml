@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="search_result_press">#ebebeb</color>
+
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="blue">#0000FF</color>
+
+    <color name="dialog_btn_bg">#66d9d9d9</color>
+
+    <color name="fanxq_text_33_33_33">#212121</color>
+    <color name="fanxq_text_98_98_100">#626264</color>
+
+    <!-- 分割线 灰色 -->
+    <color name="fanxq_common_line">#DDDDDD</color>
+    <!-- 分割线 -->
+    <color name="common_line_bg">#FFCBCCCD</color>
+    <!-- 内容页 背景色 灰色 -->
+    <color name="fanxq_content_bg">#EFEFEF</color>
+</resources>

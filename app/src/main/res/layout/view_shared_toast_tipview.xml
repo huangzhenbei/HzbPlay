@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/px320"
+    android:layout_height="@dimen/px106"
+    android:background="@color/fanxq_common_line"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/px24"
+    android:paddingLeft="@dimen/px34"
+    android:paddingRight="@dimen/px34"
+    android:paddingTop="@dimen/px26" >
+
+    <ImageView
+        android:id="@+id/toast_tip_image"
+        android:layout_width="@dimen/px24"
+        android:layout_height="@dimen/px24"
+        android:layout_marginRight="@dimen/px10"
+        android:src="@mipmap/public_img_nointranet"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/toast_tip_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:text=""
+        android:singleLine="false"
+        android:textColor="@color/fanxq_text_33_33_33"
+        android:textSize="@dimen/px24_sp" />
+
+</LinearLayout>

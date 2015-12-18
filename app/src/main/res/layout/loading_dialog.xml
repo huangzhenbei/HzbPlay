@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/dialog_view"
+    android:minHeight="@dimen/px106"  
+    android:minWidth="@dimen/px320"
+    android:gravity="center"
+    android:background="@color/fanxq_common_line"
+    android:orientation="horizontal" >
+    
+    <sino.com.yunyingAndroidPlay.view.ImageProgressBar
+            android:layout_width="@dimen/px24"
+            android:layout_height="@dimen/px24"
+            android:layout_gravity="center"
+            android:src="@mipmap/loading_jiazai"
+            android:layout_marginRight="@dimen/px10"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tipTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:text="正在上传……"
+            android:textColor="@color/fanxq_text_33_33_33"
+            android:textSize="@dimen/px24_sp" />
+
+</LinearLayout>
