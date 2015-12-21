@@ -26,6 +26,9 @@ public class MainActivity extends PlaySetting {
         intPlay(this,R.id.course_main_videoplayview,playDataBeanList);
     }
 
+    /**
+     * 视频数据
+     */
     private void initData(){
         //视频集合
         playDataBeanList = new ArrayList<PlayDataBean>();

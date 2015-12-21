@@ -224,21 +224,6 @@ public abstract class PlaySetting extends AppCompatActivity {
         if (currentPlay.getPlayDataType() == PlayDataType.ImageAdvertisement || currentPlay.getPlayDataType() == PlayDataType.VideoAdvertisement) {
             videoPlayView.hidePlayControllBar();
         }
-        /**
-         *
-         btb_top.setVisibility(View.VISIBLE);
-         if (mIVideoPlayPupWindowSetting != null) {
-         mIVideoPlayPupWindowSetting.dismiss();
-         }
-         sv_contnet.setOnTouchListener(new View.OnTouchListener() {
-        @Override public boolean onTouch(View arg0, MotionEvent arg1) {
-        return false;
-        }
-        });
-         ms_scrollView.setVisibility(View.VISIBLE);
-         ll_advertisement.setVisibility(View.VISIBLE);
-         ((MainActivity) mActivity).showFragment();
-         */
     }
 
     /**
@@ -260,18 +245,6 @@ public abstract class PlaySetting extends AppCompatActivity {
      * 切换为横屏之后，触发的方法
      */
     public void showLandscapeFullScreenFunction() {
-        /**
-         *
-         btb_top.setVisibility(View.GONE);
-         sv_contnet.setOnTouchListener(new OnTouchListener() {
-        @Override public boolean onTouch(View arg0, MotionEvent arg1) {
-        return true;
-        }
-        });
-         ms_scrollView.setVisibility(View.GONE);
-         ll_advertisement.setVisibility(View.GONE);
-         ((MainActivity) mActivity).dismissFragment();
-         */
     }
 
     /**
@@ -288,8 +261,6 @@ public abstract class PlaySetting extends AppCompatActivity {
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                     getResources().getDimensionPixelSize(R.dimen.coursemain_videoplay_height));
-            //layoutParams.addRule(RelativeLayout.BELOW, btb_top.getId());
-            //layoutParams.bottomMargin = DisplayUtils.dpToPx(getActivity(), 5);
             videoPlayView.setLayoutParams(layoutParams);
             videoPlayView.onConfigurationChanged(false);
         }

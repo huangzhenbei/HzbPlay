@@ -887,6 +887,7 @@ public class VideoPlayView extends RelativeLayout implements HotPointParent.HotP
                  * 未播放时，点击播放按钮(第一次)
                  */
                 case R.id.video_player_play_btn:
+
                     if (NetworkUtils.getNetworkType(mActivity) == 0) {
                         Toast.makeText(mContext, "小七找不到网络....T.T", Toast.LENGTH_SHORT).show();
                         return;
@@ -896,6 +897,8 @@ public class VideoPlayView extends RelativeLayout implements HotPointParent.HotP
                         return;
                     }
                     String strNetworkTypeName = NetworkUtils.getNetWorkTypeName(mActivity);
+
+
 
                     if (!StringUtils.isNull(strNetworkTypeName)) {
                         DialogUtils.dialogMessage(mActivity, "友情提醒", "您当前是" + strNetworkTypeName + "会产生流量费用,请选择是否继续播放", "确定", "取消",
@@ -918,6 +921,12 @@ public class VideoPlayView extends RelativeLayout implements HotPointParent.HotP
                         bigPlayBtn.setVisibility(View.GONE);
                         firstPlay();
                     }
+                    /**
+                     * 隐藏横屏，时间进度view
+                     */
+                    fullDuration.setVisibility(View.GONE);
+                    currentDuration.setVisibility(View.GONE);
+
                     break;
             }
         }
@@ -930,7 +939,7 @@ public class VideoPlayView extends RelativeLayout implements HotPointParent.HotP
         }
         if (playDataBean != null) {
             mActivity.showPortraitScreen();
-            if (playDataBean.getPlayDataType() == PlayDataType.Video) {
+            if (playDataBean.getPlayDataType() == PlayDataType.Video||playDataBean.getPlayDataType()==PlayDataType.VideoAdvertisement) {
                 // mActivity.btb_top.setVisibility(View.GONE);
                 isStarted = true;
                 if (isPlayFinished) {

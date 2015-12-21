@@ -88,7 +88,7 @@
 
         <FrameLayout
             android:id="@+id/video_player_controll_play_container"
-            android:layout_width="53dp"
+            android:layout_width="34dp"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true" >
 
@@ -117,7 +117,7 @@
 
         <FrameLayout
             android:id="@+id/video_player_controll_full_screen_container"
-            android:layout_width="53dp"
+            android:layout_width="34dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:gravity="center"
@@ -166,6 +166,7 @@
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:max="100"
+                android:thumbOffset="0dp"
                 android:maxHeight="1dp"
                 android:minHeight="1dp"
                 android:progressDrawable="@drawable/player_seekbar_style"
