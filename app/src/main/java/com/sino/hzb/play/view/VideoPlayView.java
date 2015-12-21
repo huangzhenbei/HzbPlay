@@ -161,7 +161,7 @@ public class VideoPlayView extends RelativeLayout implements HotPointParent.HotP
     private float mBrightness = -1f;
     // hzb
     private Context mContext;
-    private PlaySetting mActivity;
+    private PlaySetting playSetting;
 
     private int Max_X;
     private int Max_y;
@@ -185,6 +185,7 @@ public class VideoPlayView extends RelativeLayout implements HotPointParent.HotP
 
     /**
      * 获取当前视频信息
+     *
      * @return
      */
     public PlayDataBean getPlayDataBean() {
@@ -224,13 +225,14 @@ public class VideoPlayView extends RelativeLayout implements HotPointParent.HotP
 
     /**
      * 初始化播放视频信息
+     *
      * @param playDataBean
      */
-    public void initPlay(PlayDataBean playDataBean, PlaySetting mActivity) {
-        if(playDataBean==null){
+    public void initPlay(PlayDataBean playDataBean, PlaySetting playSetting) {
+        if (playDataBean == null) {
             return;
         }
-        this.mActivity=mActivity;
+        this.playSetting = playSetting;
         this.playDataBean = playDataBean;
         if (isSurfaceHolderCreated && this.isStarted) {
             initPlayInfo();
@@ -252,13 +254,13 @@ public class VideoPlayView extends RelativeLayout implements HotPointParent.HotP
     }
 
     public void startPlay(PlayDataBean playDataBean) {
-        this.playDataBean=playDataBean;
         this.isStarted = true;
         this.isPlayFinished = false;
         if (this.playDataBean.getVideoId() == playDataBean.getVideoId()) {
             this.currentPosition = 0;
             handlePlay(true);
         } else {
+            this.playDataBean = playDataBean;
             this.playDataBean.setVideoId(playDataBean.getVideoId());
             this.playDataBean.setVoidStringUrl(playDataBean.getVoidStringUrl());
             this.currentPosition = playDataBean.getImageAdvertisementPosition();
@@ -267,6 +269,7 @@ public class VideoPlayView extends RelativeLayout implements HotPointParent.HotP
             playProgressText.setText(DEFAULT_PROGRESS);
             startPlayNext();
         }
+
     }
 
     private void startPlayNext() {
@@ -548,7 +551,7 @@ public class VideoPlayView extends RelativeLayout implements HotPointParent.HotP
                 }
 
             } else {
-                mActivity.updateHadByTime(currentPosition / 1000);
+                playSetting.updateHadByTime(currentPosition / 1000);
                 isViewShow(false);
             }
             long pos = playSeekBar.getMax() * currentPosition / duration;
@@ -825,33 +828,35 @@ public class VideoPlayView extends RelativeLayout implements HotPointParent.HotP
                     break;
                 case R.id.ib_advertisement_controll_full_screen:
                     if (isFullScreen) {
-                        mActivity.showPortraitScreen();
+                        playSetting.showPortraitScreen();
                         ib_advertisement_controll_full_screen.setImageResource(R.drawable.player_inline_fullscreen_btn_selector);
                     } else {
-                        mActivity.showLandscapeFullScreen();
+                        playSetting.showLandscapeFullScreen();
                         ib_advertisement_controll_full_screen.setImageResource(R.drawable.player_inline_smallscreen_btn_selector);
                     }
                     isFullScreen = !isFullScreen;
                     break;
                 case R.id.tv_popuwindow:
+                    playSetting.onTitleRightTextOnClick();
                     break;
-               // case R.id.video_player_controll_play_container:
-                    /**
-                     * 暂停或者恢复播放
-                     */
+                // case R.id.video_player_controll_play_container:
+                /**
+                 * 暂停或者恢复播放
+                 */
                 case R.id.video_player_controll_play_btn:
-                    if (NetworkUtils.getNetworkType(mActivity) == 0) {
+                    if (NetworkUtils.getNetworkType(playSetting) == 0) {
                         ToastManager.getInstance().showToast(getContext(), "小七找不到网络....T.T");
                         return;
-                    };
+                    }
+                    ;
 
                     if (isStarted) {
                         isStarted = false;
                         handleStop();
                     } else {
-                        String strNetworkTypeName = NetworkUtils.getNetWorkTypeName(mActivity);
+                        String strNetworkTypeName = NetworkUtils.getNetWorkTypeName(playSetting);
                         if (!StringUtils.isNull(strNetworkTypeName)) {
-                            DialogUtils.dialogMessage(mActivity, "友情提醒", "您当前是" + strNetworkTypeName + "会产生流量费用,请选择是否继续播放", "确定", "取消",
+                            DialogUtils.dialogMessage(playSetting, "友情提醒", "您当前是" + strNetworkTypeName + "会产生流量费用,请选择是否继续播放", "确定", "取消",
                                     new CustomeDialog.OnCustomeDialogClickListener() {
                                         @Override
                                         public void onCustomeDialogClick(CustomeDialog.CustomeDialogClickType type) {
@@ -880,28 +885,26 @@ public class VideoPlayView extends RelativeLayout implements HotPointParent.HotP
                     }
                     break;
                 case R.id.video_player_back_btn_container:
-                case R.id.video_player_back_btn:
-                    showVideoSmallScreen();
+                    playSetting.onTitleLeftImageBackOnClick();
                     break;
                 /**
                  * 未播放时，点击播放按钮(第一次)
                  */
                 case R.id.video_player_play_btn:
 
-                    if (NetworkUtils.getNetworkType(mActivity) == 0) {
+                    if (NetworkUtils.getNetworkType(playSetting) == 0) {
                         Toast.makeText(mContext, "小七找不到网络....T.T", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     ;
-                    if (mActivity == null) {
+                    if (playSetting == null) {
                         return;
                     }
-                    String strNetworkTypeName = NetworkUtils.getNetWorkTypeName(mActivity);
-
+                    String strNetworkTypeName = NetworkUtils.getNetWorkTypeName(playSetting);
 
 
                     if (!StringUtils.isNull(strNetworkTypeName)) {
-                        DialogUtils.dialogMessage(mActivity, "友情提醒", "您当前是" + strNetworkTypeName + "会产生流量费用,请选择是否继续播放", "确定", "取消",
+                        DialogUtils.dialogMessage(playSetting, "友情提醒", "您当前是" + strNetworkTypeName + "会产生流量费用,请选择是否继续播放", "确定", "取消",
                                 new CustomeDialog.OnCustomeDialogClickListener() {
                                     @Override
                                     public void onCustomeDialogClick(CustomeDialog.CustomeDialogClickType type) {
@@ -938,9 +941,9 @@ public class VideoPlayView extends RelativeLayout implements HotPointParent.HotP
             return;
         }
         if (playDataBean != null) {
-            mActivity.showPortraitScreen();
-            if (playDataBean.getPlayDataType() == PlayDataType.Video||playDataBean.getPlayDataType()==PlayDataType.VideoAdvertisement) {
-                // mActivity.btb_top.setVisibility(View.GONE);
+            playSetting.showPortraitScreen();
+            if (playDataBean.getPlayDataType() == PlayDataType.Video || playDataBean.getPlayDataType() == PlayDataType.VideoAdvertisement) {
+                // playSetting.btb_top.setVisibility(View.GONE);
                 isStarted = true;
                 if (isPlayFinished) {
                     isPlayFinished = false;
@@ -985,7 +988,7 @@ public class VideoPlayView extends RelativeLayout implements HotPointParent.HotP
         }
     }
 
-    private void showVideoSmallScreen() {
+    public void showVideoSmallScreen() {
         if (isFullScreen) {
             onVideoScreenSizeChanged();
         }
@@ -1268,7 +1271,7 @@ public class VideoPlayView extends RelativeLayout implements HotPointParent.HotP
             if (player != null) {
                 if (!isFullScreen) {
                     // 切换横屏
-                    mActivity.showLandscapeFullScreen();
+                    playSetting.showLandscapeFullScreen();
                     // 双击暂停
                     // handleStop();
                 } else {
@@ -1276,7 +1279,7 @@ public class VideoPlayView extends RelativeLayout implements HotPointParent.HotP
                     // isStarted = true;
                     // 双击开始
                     // 切换横屏
-                    mActivity.showPortraitScreen();
+                    playSetting.showPortraitScreen();
 
                     // handlePlay();
                     // }
@@ -1288,7 +1291,7 @@ public class VideoPlayView extends RelativeLayout implements HotPointParent.HotP
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
             handleShowOrHideBar();
-            //EveryDayVideoFragment act = (EveryDayVideoFragment) mActivity;
+            //EveryDayVideoFragment act = (EveryDayVideoFragment) playSetting;
             // act.goneEditView();
             return true;
         }
@@ -1302,11 +1305,11 @@ public class VideoPlayView extends RelativeLayout implements HotPointParent.HotP
             float deltaX = e2.getX() - e1.getX();
             float mOldY = e1.getY();
             float mNewY = e2.getY();
-            if (mActivity == null) {
+            if (playSetting == null) {
                 return false;
             }
 
-            int st = mActivity.getResources().getConfiguration().orientation;
+            int st = playSetting.getResources().getConfiguration().orientation;
 
             if (playDataBean == null) {
                 return false;
@@ -1427,21 +1430,21 @@ public class VideoPlayView extends RelativeLayout implements HotPointParent.HotP
     private void onHorizontalScrollSettingBrightness(float distance) {
 
         if (mBrightness < 0) {
-            mBrightness = mActivity.getWindow().getAttributes().screenBrightness;
+            mBrightness = playSetting.getWindow().getAttributes().screenBrightness;
             if (mBrightness <= 0.00f)
                 mBrightness = 0.50f;
             if (mBrightness < 0.01f)
                 mBrightness = 0.01f;
         }
 
-        WindowManager.LayoutParams lpa = mActivity.getWindow().getAttributes();
+        WindowManager.LayoutParams lpa = playSetting.getWindow().getAttributes();
         lpa.screenBrightness = mBrightness + distance;
         if (lpa.screenBrightness > 1.0f)
             lpa.screenBrightness = 1.0f;
         else if (lpa.screenBrightness < 0.01f)
             lpa.screenBrightness = 0.01f;
 
-        mActivity.getWindow().setAttributes(lpa);
+        playSetting.getWindow().setAttributes(lpa);
 
         mCircleProgress.setVisibility(VISIBLE);
         mCircleProgress.n = (int) (lpa.screenBrightness * 360);
@@ -1665,6 +1668,7 @@ public class VideoPlayView extends RelativeLayout implements HotPointParent.HotP
         this.errorViewContainer = findViewById(R.id.video_player_no_net);
         this.maskView = findViewById(R.id.video_player_mask_view);
 
+        this.tv_popuwindow.setOnClickListener(onClickListener);
         this.backButtonContainer.setOnClickListener(onClickListener);
         this.backButton.setOnClickListener(onClickListener);
         this.playSurfaceView.setOnTouchListener(touchListener);

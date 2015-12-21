@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -12,6 +13,7 @@ import android.widget.RelativeLayout;
 import com.sino.hzb.play.R;
 import com.sino.hzb.play.model.PlayDataBean;
 import com.sino.hzb.play.model.PlayDataType;
+import com.sino.hzb.play.util.ToastManager;
 import com.sino.hzb.play.view.VideoPlayView;
 
 import java.util.List;
@@ -23,6 +25,15 @@ import java.util.List;
 public abstract class PlaySetting extends AppCompatActivity {
 
     private Activity mActivity;
+
+    /**
+     * popuwindow的view
+     */
+    public View mContentView;
+    /**
+     * popupwindow控制器
+     */
+    public VideoPlayPupWindowSetting mIVideoPlayPupWindowSetting;
 
     /**
      * 视频播放控件
@@ -39,11 +50,12 @@ public abstract class PlaySetting extends AppCompatActivity {
      */
     public PlayDataBean currentPlay;
 
-    public void intPlay(Activity mActivity,int videoPlayViewID,List<PlayDataBean> playDataBeanList) {
-        this.mActivity=mActivity;
-        this.playDataBeanList=playDataBeanList;
-        this.currentPlay=playDataBeanList.get(0);
+    public void intPlay(Activity mActivity, int videoPlayViewID, List<PlayDataBean> playDataBeanList) {
+        this.mActivity = mActivity;
         this.videoPlayView = (VideoPlayView) findViewById(videoPlayViewID);
+        this.playDataBeanList = playDataBeanList;
+
+        this.currentPlay = playDataBeanList.get(0);
         videoPlayView.setOnPlayCompletedListener(onPlayCompletedListener);
         videoPlayView.initPlay(playDataBeanList.get(0), this);
         initVideoView();
@@ -161,8 +173,8 @@ public abstract class PlaySetting extends AppCompatActivity {
         } else {
             for (int i = index; i < videos.size(); i++) {
                 PlayDataBean playDataBean = videos.get(i);
-                if (playDataBean != null) {
-                    return playDataBean;
+                if (videos.get(i) != null) {
+                    return videos.get(i);
                 }
             }
             for (int i = 0; i < index; i++) {
@@ -264,9 +276,72 @@ public abstract class PlaySetting extends AppCompatActivity {
             videoPlayView.setLayoutParams(layoutParams);
             videoPlayView.onConfigurationChanged(false);
         }
-        if (currentPlay.getPlayDataType()== PlayDataType.ImageAdvertisement||currentPlay.getPlayDataType()== PlayDataType.VideoAdvertisement) {
+        if (currentPlay.getPlayDataType() == PlayDataType.ImageAdvertisement || currentPlay.getPlayDataType() == PlayDataType.VideoAdvertisement) {
             videoPlayView.hidePlayControllBar();
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (currentPlay != null) {
+            if (videoPlayView != null) {
+                if (currentPlay.getPlayDataType().ImageAdvertisement == PlayDataType.ImageAdvertisement || currentPlay.getPlayDataType().VideoAdvertisement == PlayDataType.VideoAdvertisement) {
+                    videoPlayView.onDestroy();
+                    videoPlayView.handleStop();
+                    videoPlayView.showStatus(VideoPlayView.Status.Init);
+                } else {
+                    if (videoPlayView.isPlaying()) {
+                        videoPlayView.handleStop();
+                        videoPlayView.showStatus(VideoPlayView.Status.Pause);
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (currentPlay != null) {
+            if (currentPlay.getPlayDataType().ImageAdvertisement == PlayDataType.ImageAdvertisement || currentPlay.getPlayDataType().VideoAdvertisement == PlayDataType.VideoAdvertisement) {
+                videoPlayView.onDestroy();
+                //initPlayData();
+                videoPlayView.initPlay(playDataBeanList.get(0), this);
+                videoPlayView.hidePlayControllBar();
+                videoPlayView.showStatus(VideoPlayView.Status.Init);
+                return;
+            } else if (currentPlay.getPlayDataType() == PlayDataType.Video) {
+                return;
+            } else {
+                videoPlayView.hidePlayControllBar();
+                videoPlayView.showStatus(VideoPlayView.Status.Init);
+                return;
+            }
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) { //按下的如果是BACK，同时没有重复
+            showPortraitScreen();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    /**
+     * 标题栏，左侧按钮
+     */
+    public void onTitleLeftImageBackOnClick() {
+        videoPlayView.showVideoSmallScreen();
+    }
+
+    /**
+     * 标题栏，右侧按钮
+     */
+    public void onTitleRightTextOnClick() {
+        mIVideoPlayPupWindowSetting.popupWindonViewSetting();
     }
 
     public void updateHadByTime(int bytime) {
