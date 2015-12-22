@@ -1118,9 +1118,7 @@ public class VideoPlayView extends RelativeLayout implements HotPointParent.HotP
     private OnCompletionListener onCompletionListener = new OnCompletionListener() {
         @Override
         public void onCompletion(MediaPlayer mp) {
-
             if (playSetting.onVideoPlayOver()) {
-
                 if (onPlayCompletedListener == null || !onPlayCompletedListener.isNeedPlayLoop()) {// finished
                     isPlayFinished = true;
                     isStarted = false;

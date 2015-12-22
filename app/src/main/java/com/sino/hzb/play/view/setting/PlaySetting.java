@@ -493,9 +493,14 @@ public abstract class PlaySetting extends AppCompatActivity implements IPlaySett
         videoPlayView.isViewShow(false);
     }
 
+    /**
+     * 当一个视频播放完成之后，触发的时间
+     * @return  如果不做任何特殊处理，请返回true，
+     * true=默认的处理流程
+     * false=不使用播放器默认的处理流程
+     */
     @Override
     public boolean onVideoPlayOver() {
-
         return true;
     }
 }
