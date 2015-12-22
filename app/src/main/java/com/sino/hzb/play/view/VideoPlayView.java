@@ -44,6 +44,7 @@ import com.sino.hzb.play.util.NetworkUtils;
 import com.sino.hzb.play.util.ParamsUtil;
 import com.sino.hzb.play.util.StringUtils;
 import com.sino.hzb.play.util.ToastManager;
+import com.sino.hzb.play.view.setting.IPlaySetting;
 import com.sino.hzb.play.view.setting.PlaySetting;
 import com.sino.hzb.play.view.setting.VideoPlayPupWindowSetting;
 
@@ -161,7 +162,7 @@ public class VideoPlayView extends RelativeLayout implements HotPointParent.HotP
     private float mBrightness = -1f;
     // hzb
     private Context mContext;
-    private PlaySetting playSetting;
+    private IPlaySetting playSetting;
 
     private int Max_X;
     private int Max_y;
@@ -717,7 +718,7 @@ public class VideoPlayView extends RelativeLayout implements HotPointParent.HotP
         return !TextUtils.isEmpty(path);
     }
 
-    private void handlePlay() {
+    public void handlePlay() {
         handlePlay(false);
     }
 
@@ -844,39 +845,7 @@ public class VideoPlayView extends RelativeLayout implements HotPointParent.HotP
                  * 暂停或者恢复播放
                  */
                 case R.id.video_player_controll_play_btn:
-                    if (NetworkUtils.getNetworkType(playSetting) == 0) {
-                        ToastManager.getInstance().showToast(getContext(), "小七找不到网络....T.T");
-                        return;
-                    }
-                    ;
-
-                    if (isStarted) {
-                        isStarted = false;
-                        handleStop();
-                    } else {
-                        String strNetworkTypeName = NetworkUtils.getNetWorkTypeName(playSetting);
-                        if (!StringUtils.isNull(strNetworkTypeName)) {
-                            DialogUtils.dialogMessage(playSetting, "友情提醒", "您当前是" + strNetworkTypeName + "会产生流量费用,请选择是否继续播放", "确定", "取消",
-                                    new CustomeDialog.OnCustomeDialogClickListener() {
-                                        @Override
-                                        public void onCustomeDialogClick(CustomeDialog.CustomeDialogClickType type) {
-                                            switch (type) {
-                                                case Ok:
-                                                    isStarted = true;
-                                                    handlePlay();
-                                                    break;
-                                                case Cancel:
-                                                    break;
-                                                default:
-                                                    break;
-                                            }
-                                        }
-                                    });
-                        } else {
-                            isStarted = true;
-                            handlePlay();
-                        }
-                    }
+                    playSetting.onStopOrPause();
                     break;
                 case R.id.video_player_controll_full_screen_container:
                 case R.id.video_player_controll_full_screen:
@@ -891,45 +860,7 @@ public class VideoPlayView extends RelativeLayout implements HotPointParent.HotP
                  * 未播放时，点击播放按钮(第一次)
                  */
                 case R.id.video_player_play_btn:
-
-                    if (NetworkUtils.getNetworkType(playSetting) == 0) {
-                        Toast.makeText(mContext, "小七找不到网络....T.T", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    ;
-                    if (playSetting == null) {
-                        return;
-                    }
-                    String strNetworkTypeName = NetworkUtils.getNetWorkTypeName(playSetting);
-
-
-                    if (!StringUtils.isNull(strNetworkTypeName)) {
-                        DialogUtils.dialogMessage(playSetting, "友情提醒", "您当前是" + strNetworkTypeName + "会产生流量费用,请选择是否继续播放", "确定", "取消",
-                                new CustomeDialog.OnCustomeDialogClickListener() {
-                                    @Override
-                                    public void onCustomeDialogClick(CustomeDialog.CustomeDialogClickType type) {
-                                        switch (type) {
-                                            case Ok:
-                                                bigPlayBtn.setVisibility(View.GONE);
-                                                firstPlay();
-                                                break;
-                                            case Cancel:
-                                                break;
-                                            default:
-                                                break;
-                                        }
-                                    }
-                                });
-                    } else {
-                        bigPlayBtn.setVisibility(View.GONE);
-                        firstPlay();
-                    }
-                    /**
-                     * 隐藏横屏，时间进度view
-                     */
-                    fullDuration.setVisibility(View.GONE);
-                    currentDuration.setVisibility(View.GONE);
-
+                    playSetting.onFirstPlay();
                     break;
             }
         }
@@ -1309,7 +1240,7 @@ public class VideoPlayView extends RelativeLayout implements HotPointParent.HotP
                 return false;
             }
 
-            int st = playSetting.getResources().getConfiguration().orientation;
+            int st = playSetting.getActivity().getResources().getConfiguration().orientation;
 
             if (playDataBean == null) {
                 return false;
@@ -1430,21 +1361,21 @@ public class VideoPlayView extends RelativeLayout implements HotPointParent.HotP
     private void onHorizontalScrollSettingBrightness(float distance) {
 
         if (mBrightness < 0) {
-            mBrightness = playSetting.getWindow().getAttributes().screenBrightness;
+            mBrightness = playSetting.getActivity().getWindow().getAttributes().screenBrightness;
             if (mBrightness <= 0.00f)
                 mBrightness = 0.50f;
             if (mBrightness < 0.01f)
                 mBrightness = 0.01f;
         }
 
-        WindowManager.LayoutParams lpa = playSetting.getWindow().getAttributes();
+        WindowManager.LayoutParams lpa = playSetting.getActivity().getWindow().getAttributes();
         lpa.screenBrightness = mBrightness + distance;
         if (lpa.screenBrightness > 1.0f)
             lpa.screenBrightness = 1.0f;
         else if (lpa.screenBrightness < 0.01f)
             lpa.screenBrightness = 0.01f;
 
-        playSetting.getWindow().setAttributes(lpa);
+        playSetting.getActivity().getWindow().setAttributes(lpa);
 
         mCircleProgress.setVisibility(VISIBLE);
         mCircleProgress.n = (int) (lpa.screenBrightness * 360);

@@ -9,11 +9,16 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.sino.hzb.play.R;
 import com.sino.hzb.play.model.PlayDataBean;
 import com.sino.hzb.play.model.PlayDataType;
+import com.sino.hzb.play.util.NetworkUtils;
+import com.sino.hzb.play.util.StringUtils;
 import com.sino.hzb.play.util.ToastManager;
+import com.sino.hzb.play.view.CustomeDialog;
+import com.sino.hzb.play.view.DialogUtils;
 import com.sino.hzb.play.view.VideoChapter;
 import com.sino.hzb.play.view.VideoPlayView;
 
@@ -24,7 +29,7 @@ import java.util.List;
 /**
  * Created by hzb on 15/12/16.
  */
-public abstract class PlaySetting extends AppCompatActivity {
+public abstract class PlaySetting extends AppCompatActivity implements IPlaySetting {
 
     private Activity mActivity;
 
@@ -53,6 +58,7 @@ public abstract class PlaySetting extends AppCompatActivity {
      */
     public PlayDataBean currentPlay;
 
+    @Override
     public void intPlay(Activity mActivity, int videoPlayViewID, List<PlayDataBean> playDataBeanList) {
         this.mActivity = mActivity;
         this.videoPlayView = (VideoPlayView) findViewById(videoPlayViewID);
@@ -63,25 +69,25 @@ public abstract class PlaySetting extends AppCompatActivity {
         videoPlayView.initPlay(playDataBeanList.get(0), this);
         initVideoView();
 
-        List<VideoChapter> anchors=new ArrayList<VideoChapter>();
-        VideoChapter courseChapter=new VideoChapter();
-        courseChapter.anchor_time=20;
-        courseChapter.anchor_title="aaaaaaaa";
+        List<VideoChapter> anchors = new ArrayList<VideoChapter>();
+        VideoChapter courseChapter = new VideoChapter();
+        courseChapter.anchor_time = 20;
+        courseChapter.anchor_title = "aaaaaaaa";
         anchors.add(courseChapter);
 
-        courseChapter=new VideoChapter();
-        courseChapter.anchor_time=40;
-        courseChapter.anchor_title="bbbbbbb";
+        courseChapter = new VideoChapter();
+        courseChapter.anchor_time = 40;
+        courseChapter.anchor_title = "bbbbbbb";
         anchors.add(courseChapter);
 
-        courseChapter=new VideoChapter();
-        courseChapter.anchor_time=60;
-        courseChapter.anchor_title="啊啊啊啊啊啊";
+        courseChapter = new VideoChapter();
+        courseChapter.anchor_time = 60;
+        courseChapter.anchor_title = "啊啊啊啊啊啊";
         anchors.add(courseChapter);
 
-        courseChapter=new VideoChapter();
-        courseChapter.anchor_time=80;
-        courseChapter.anchor_title="阿拉山口大陆架三打两建";
+        courseChapter = new VideoChapter();
+        courseChapter.anchor_time = 80;
+        courseChapter.anchor_title = "阿拉山口大陆架三打两建";
         anchors.add(courseChapter);
 
         this.videoPlayView.hotPointParent.setAnchors(anchors);
@@ -90,7 +96,8 @@ public abstract class PlaySetting extends AppCompatActivity {
     /**
      * 初始化video控件
      */
-    private void initVideoView() {
+    @Override
+    public void initVideoView() {
         /**
          * 设置屏幕旋转的监听
          */
@@ -168,11 +175,13 @@ public abstract class PlaySetting extends AppCompatActivity {
 
     /**
      * 获得下一个要播放的视频
+     *
      * @param videos
      * @param id
      * @return
      */
-    private PlayDataBean getNextBoughtCourse(List<PlayDataBean> videos, int id) {
+    @Override
+    public PlayDataBean getNextBoughtCourse(List<PlayDataBean> videos, int id) {
         if (videos == null || videos.size() <= 0) {
             return null;
         }
@@ -217,7 +226,8 @@ public abstract class PlaySetting extends AppCompatActivity {
      * @param playDataBean 要播放的视频信息
      * @return
      */
-    private boolean playCourse(PlayDataBean playDataBean) {
+    @Override
+    public boolean playCourse(PlayDataBean playDataBean) {
         if (playDataBean != null) {
             currentPlay = playDataBean;
             videoPlayView.startPlay(playDataBean);
@@ -240,6 +250,7 @@ public abstract class PlaySetting extends AppCompatActivity {
     /**
      * 切换为竖屏
      */
+    @Override
     public void showPortraitScreen() {
         WindowManager.LayoutParams params = this.getWindow().getAttributes();
         params.flags &= (~WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -254,6 +265,7 @@ public abstract class PlaySetting extends AppCompatActivity {
     /**
      * 切换为竖屏之后，触发的事件
      */
+    @Override
     public void showPortraitScreenFunction() {
         if (currentPlay.getPlayDataType() == PlayDataType.ImageAdvertisement || currentPlay.getPlayDataType() == PlayDataType.VideoAdvertisement) {
             videoPlayView.hidePlayControllBar();
@@ -263,6 +275,7 @@ public abstract class PlaySetting extends AppCompatActivity {
     /**
      * 切换为横屏
      */
+    @Override
     public void showLandscapeFullScreen() {
         WindowManager.LayoutParams params = this.getWindow().getAttributes();
         params.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
@@ -278,6 +291,7 @@ public abstract class PlaySetting extends AppCompatActivity {
     /**
      * 切换为横屏之后，触发的方法
      */
+    @Override
     public void showLandscapeFullScreenFunction() {
     }
 
@@ -357,6 +371,7 @@ public abstract class PlaySetting extends AppCompatActivity {
     /**
      * 标题栏，左侧按钮
      */
+    @Override
     public void onTitleLeftImageBackOnClick() {
         videoPlayView.showVideoSmallScreen();
     }
@@ -364,17 +379,104 @@ public abstract class PlaySetting extends AppCompatActivity {
     /**
      * 标题栏，右侧按钮
      */
+    @Override
     public void onTitleRightTextOnClick() {
         mIVideoPlayPupWindowSetting.popupWindonViewSetting();
     }
 
     /**
+     * 暂停或继续播放
+     */
+    @Override
+    public void onStopOrPause() {
+        if (NetworkUtils.getNetworkType(mActivity) == 0) {
+            ToastManager.getInstance().showToast(mActivity, "找不到网络....T.T");
+            videoPlayView.isStarted = false;
+            videoPlayView.handleStop();
+        }
+        if (videoPlayView.isStarted) {
+            videoPlayView.isStarted = false;
+            videoPlayView.handleStop();
+        } else {
+            String strNetworkTypeName = NetworkUtils.getNetWorkTypeName(mActivity);
+            if (!StringUtils.isNull(strNetworkTypeName)) {
+                DialogUtils.dialogMessage(mActivity, "友情提醒", "您当前是" + strNetworkTypeName + "会产生流量费用,请选择是否继续播放", "确定", "取消",
+                        new CustomeDialog.OnCustomeDialogClickListener() {
+                            @Override
+                            public void onCustomeDialogClick(CustomeDialog.CustomeDialogClickType type) {
+                                switch (type) {
+                                    case Ok:
+                                        videoPlayView.isStarted = true;
+                                        videoPlayView.handlePlay();
+                                        break;
+                                    case Cancel:
+                                        videoPlayView.isStarted = false;
+                                        videoPlayView.handleStop();
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        });
+            } else {
+                videoPlayView.isStarted = true;
+                videoPlayView.handlePlay();
+            }
+        }
+    }
+
+    /**
+     * 第一播放视频
+     */
+    @Override
+    public void onFirstPlay() {
+        if (NetworkUtils.getNetworkType(mActivity) == 0) {
+            Toast.makeText(mActivity, "找不到网络....T.T", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String strNetworkTypeName = NetworkUtils.getNetWorkTypeName(mActivity);
+        if (!StringUtils.isNull(strNetworkTypeName)) {
+            DialogUtils.dialogMessage(mActivity, "友情提醒", "您当前是" + strNetworkTypeName + "会产生流量费用,请选择是否继续播放", "确定", "取消",
+                    new CustomeDialog.OnCustomeDialogClickListener() {
+                        @Override
+                        public void onCustomeDialogClick(CustomeDialog.CustomeDialogClickType type) {
+                            switch (type) {
+                                case Ok:
+                                    videoPlayView.bigPlayBtn.setVisibility(View.GONE);
+                                    videoPlayView.firstPlay();
+                                    break;
+                                case Cancel:
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    });
+        } else {
+            videoPlayView.bigPlayBtn.setVisibility(View.GONE);
+            videoPlayView.firstPlay();
+        }
+        /**
+         * 隐藏横屏，时间进度view
+         */
+        videoPlayView.fullDuration.setVisibility(View.GONE);
+        videoPlayView.currentDuration.setVisibility(View.GONE);
+    }
+
+    /**
      * 时间轴
+     *
      * @param bytime 当前时间
      */
+    @Override
     public void updateHadByTime(int bytime) {
         if (bytime == 10 || bytime == 30 || bytime == 50 || bytime == 70) {
             ToastManager.getInstance().showToast(this, "时间轴：" + bytime, 1);
         }
+    }
+
+    @Override
+    public Activity getActivity() {
+        return mActivity;
     }
 }
