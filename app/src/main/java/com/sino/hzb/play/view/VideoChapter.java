@@ -2,6 +2,7 @@ package com.sino.hzb.play.view;
 
 
 public class VideoChapter {
+    public VideoChapter(){};
     public enum Status {
         Init, Playing, Played
     }

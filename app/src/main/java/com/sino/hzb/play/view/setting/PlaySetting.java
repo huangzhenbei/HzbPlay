@@ -14,8 +14,10 @@ import com.sino.hzb.play.R;
 import com.sino.hzb.play.model.PlayDataBean;
 import com.sino.hzb.play.model.PlayDataType;
 import com.sino.hzb.play.util.ToastManager;
+import com.sino.hzb.play.view.VideoChapter;
 import com.sino.hzb.play.view.VideoPlayView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -30,6 +32,7 @@ public abstract class PlaySetting extends AppCompatActivity {
      * popuwindow的view
      */
     public View mContentView;
+
     /**
      * popupwindow控制器
      */
@@ -59,8 +62,30 @@ public abstract class PlaySetting extends AppCompatActivity {
         videoPlayView.setOnPlayCompletedListener(onPlayCompletedListener);
         videoPlayView.initPlay(playDataBeanList.get(0), this);
         initVideoView();
-    }
 
+        List<VideoChapter> anchors=new ArrayList<VideoChapter>();
+        VideoChapter courseChapter=new VideoChapter();
+        courseChapter.anchor_time=20;
+        courseChapter.anchor_title="aaaaaaaa";
+        anchors.add(courseChapter);
+
+        courseChapter=new VideoChapter();
+        courseChapter.anchor_time=40;
+        courseChapter.anchor_title="bbbbbbb";
+        anchors.add(courseChapter);
+
+        courseChapter=new VideoChapter();
+        courseChapter.anchor_time=60;
+        courseChapter.anchor_title="啊啊啊啊啊啊";
+        anchors.add(courseChapter);
+
+        courseChapter=new VideoChapter();
+        courseChapter.anchor_time=80;
+        courseChapter.anchor_title="阿拉山口大陆架三打两建";
+        anchors.add(courseChapter);
+
+        this.videoPlayView.hotPointParent.setAnchors(anchors);
+    }
 
     /**
      * 初始化video控件
@@ -143,7 +168,6 @@ public abstract class PlaySetting extends AppCompatActivity {
 
     /**
      * 获得下一个要播放的视频
-     *
      * @param videos
      * @param id
      * @return
@@ -213,7 +237,6 @@ public abstract class PlaySetting extends AppCompatActivity {
         return false;
     }
 
-
     /**
      * 切换为竖屏
      */
@@ -226,7 +249,6 @@ public abstract class PlaySetting extends AppCompatActivity {
         videoPlayView.ib_advertisement_controll_full_screen
                 .setImageResource(R.drawable.player_inline_fullscreen_btn_selector);
         showPortraitScreenFunction();
-
     }
 
     /**
@@ -279,6 +301,8 @@ public abstract class PlaySetting extends AppCompatActivity {
         if (currentPlay.getPlayDataType() == PlayDataType.ImageAdvertisement || currentPlay.getPlayDataType() == PlayDataType.VideoAdvertisement) {
             videoPlayView.hidePlayControllBar();
         }
+        videoPlayView.hotPointParent.hideAnchorWindow();
+        videoPlayView.hotPointParent.setVisibility(videoPlayView.isFullScreen ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -344,6 +368,13 @@ public abstract class PlaySetting extends AppCompatActivity {
         mIVideoPlayPupWindowSetting.popupWindonViewSetting();
     }
 
+    /**
+     * 时间轴
+     * @param bytime 当前时间
+     */
     public void updateHadByTime(int bytime) {
+        if (bytime == 10 || bytime == 30 || bytime == 50 || bytime == 70) {
+            ToastManager.getInstance().showToast(this, "时间轴：" + bytime, 1);
+        }
     }
 }

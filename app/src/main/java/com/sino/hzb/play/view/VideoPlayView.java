@@ -52,7 +52,7 @@ import com.sino.hzb.play.view.setting.VideoPlayPupWindowSetting;
  * Created by hzb on 15/12/9.
  */
 public class VideoPlayView extends RelativeLayout implements HotPointParent.HotPointListener {
-    private HotPointParent hotPointParent;
+    public HotPointParent hotPointParent;
 
     public interface OnScreenChangedListener {
         public void onScreenChanged(boolean isFullScreen);
