@@ -824,8 +824,7 @@ public class VideoPlayView extends RelativeLayout implements HotPointParent.HotP
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.ll_advertisement_time:
-                    onPlayCompletedListener.onPlayNext(playDataBean.getVideoId());
-                    isViewShow(false);
+                    playSetting.onPlayNextVideo();
                     break;
                 case R.id.ib_advertisement_controll_full_screen:
                     if (isFullScreen) {
@@ -1119,24 +1118,28 @@ public class VideoPlayView extends RelativeLayout implements HotPointParent.HotP
     private OnCompletionListener onCompletionListener = new OnCompletionListener() {
         @Override
         public void onCompletion(MediaPlayer mp) {
-            if (onPlayCompletedListener == null || !onPlayCompletedListener.isNeedPlayLoop()) {// finished
-                isPlayFinished = true;
-                isStarted = false;
-                currentPosition = duration;
-                setProgress(0);
-                playSeekBar.setEnabled(true);
-                stopTimer();
-                showStatus(Status.Finished);
-                showVideoSmallScreen();
-            } else {// start play next
-                if (!onPlayCompletedListener.isHasNext(playDataBean.getVideoId())) {// replay
-                    isStarted = true;
-                    player.seekTo(0);
+
+            if (playSetting.onVideoPlayOver()) {
+
+                if (onPlayCompletedListener == null || !onPlayCompletedListener.isNeedPlayLoop()) {// finished
+                    isPlayFinished = true;
+                    isStarted = false;
+                    currentPosition = duration;
                     setProgress(0);
-                    playSeekBar.setEnabled(false);
-                    showStatus(Status.Loading);
-                } else {
-                    onPlayCompletedListener.onPlayNext(playDataBean.getVideoId());
+                    playSeekBar.setEnabled(true);
+                    stopTimer();
+                    showStatus(Status.Finished);
+                    showVideoSmallScreen();
+                } else {// start play next
+                    if (!onPlayCompletedListener.isHasNext(playDataBean.getVideoId())) {// replay
+                        isStarted = true;
+                        player.seekTo(0);
+                        setProgress(0);
+                        playSeekBar.setEnabled(false);
+                        showStatus(Status.Loading);
+                    } else {
+                        onPlayCompletedListener.onPlayNext(playDataBean.getVideoId());
+                    }
                 }
             }
         }
@@ -1767,7 +1770,7 @@ public class VideoPlayView extends RelativeLayout implements HotPointParent.HotP
      *
      * @param bl true=显示,false=不显示
      */
-    private void isViewShow(boolean bl) {
+    public void isViewShow(boolean bl) {
         if (StringUtils.isNull(tv_countdown.getText())) {
             bl = false;
         }

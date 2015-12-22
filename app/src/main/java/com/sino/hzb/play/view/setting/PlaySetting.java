@@ -475,8 +475,27 @@ public abstract class PlaySetting extends AppCompatActivity implements IPlaySett
         }
     }
 
+    /**
+     * 获取当前activity
+     * @return
+     */
     @Override
     public Activity getActivity() {
         return mActivity;
+    }
+
+    /**
+     * 播放下一个视频
+     */
+    @Override
+    public void onPlayNextVideo() {
+        onPlayCompletedListener.onPlayNext(currentPlay.getVideoId());
+        videoPlayView.isViewShow(false);
+    }
+
+    @Override
+    public boolean onVideoPlayOver() {
+
+        return true;
     }
 }

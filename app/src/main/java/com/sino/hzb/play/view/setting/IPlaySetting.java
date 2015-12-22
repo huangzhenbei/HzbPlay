@@ -24,4 +24,6 @@ public interface IPlaySetting {
     void onStopOrPause();
     void onFirstPlay();
     Activity getActivity();
+    void onPlayNextVideo();
+    boolean onVideoPlayOver();
 }
